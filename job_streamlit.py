@@ -64,11 +64,11 @@ st.subheader("Job Acceptance Rate")
 st.dataframe(job_acceptance_rate)
 
 #average interview score
-average_interview_score= df.groupby('degree_specialization')[
+average_interview_score= df.groupby('degree_specialization')[[
     'technical_score',
     'aptitude_score',
     'communication_score'
-].mean().reset_index()
+]].mean().reset_index()
 st.subheader("Average Interview Score by degree specalization")
 st.dataframe(average_interview_score)
 
