@@ -11,7 +11,7 @@ st.title("Job Acceptance Dashboard")
 
 @st.cache_data
 def load_data():
-    df = pd.read_csv(r"C:\Users\Kowsh\OneDrive\Desktop\vscode_project\Job_acceptance\job_acceptance_clean_Data.csv")
+    df = pd.read_csv("job_acceptance_clean_Data.csv")
     return df
 df = load_data()
 
@@ -31,7 +31,10 @@ col1.metric("Total", total_candidates)
 col2.metric("Accepted", accepted_candidates) 
 col3.metric("Rejected", rejected_candidates) 
 
-st.write("This dataset contains information about job candidates, including their experience, job title, and whether they were accepted or rejected for a position. The dataset can be used to analyze trends in job acceptance and rejection based on various factors such as experience and job title.")
+st.write("This dataset contains information about job candidates, including their experience, 
+job title, and whether they were accepted or rejected for a position. 
+The dataset can be used to analyze trends in job acceptance and rejection 
+based on various factors such as experience and job title.")
 
 df['status'] = df['status'].astype(str).str.strip().str.lower()
 st.write('status values:',df['status'].value_counts())
@@ -55,16 +58,17 @@ st.subheader("Placement Rate")
 st.write(f"{placement_rate:.2f}%")
 
 #job acceptance rate
-job_acceptance_rate = df.groupby('job_role_match')['status'].apply(lambda x: (x == 'placed').mean() * 100).reset_index(name='Acceptance_Rate').sort_values(by='Acceptance_Rate', ascending=False)
+job_acceptance_rate = df.groupby('job_role_match')['status'].apply(
+lambda x: (x == 'placed').mean() * 100).reset_index(name='Acceptance_Rate').sort_values(by='Acceptance_Rate', ascending=False)
 st.subheader("Job Acceptance Rate")
 st.dataframe(job_acceptance_rate)
 
 #average interview score
-average_interview_score= df.groupby('degree_specialization')[[
+average_interview_score= df.groupby('degree_specialization')[
     'technical_score',
     'aptitude_score',
     'communication_score'
-]].mean().reset_index()
+].mean().reset_index()
 st.subheader("Average Interview Score by degree specalization")
 st.dataframe(average_interview_score)
 
