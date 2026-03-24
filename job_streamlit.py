@@ -31,10 +31,10 @@ col1.metric("Total", total_candidates)
 col2.metric("Accepted", accepted_candidates) 
 col3.metric("Rejected", rejected_candidates) 
 
-st.write("This dataset contains information about job candidates, including their experience, 
+st.write("""This dataset contains information about job candidates, including their experience,
 job title, and whether they were accepted or rejected for a position. 
 The dataset can be used to analyze trends in job acceptance and rejection 
-based on various factors such as experience and job title.")
+based on various factors such as experience and job title.""")
 
 df['status'] = df['status'].astype(str).str.strip().str.lower()
 st.write('status values:',df['status'].value_counts())
