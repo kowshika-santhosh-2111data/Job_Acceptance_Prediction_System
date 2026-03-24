@@ -2,6 +2,8 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
+import pickle
+import joblib
 import warnings
 warnings.filterwarnings("ignore")
 data = pd.read_csv("HR_Job_Placement_Dataset.csv")
@@ -177,15 +179,20 @@ dataa = pd.get_dummies(dataa, columns=['gender', 'degree_specialization', 'inter
        'interview_category', 'gap_category'], drop_first=True)
 
 dataa['status'].isnull().sum()
-
 #Supervised Machine Learning (Classification)
 y = dataa['status']
 x = dataa.drop('status', axis=1)
 
+from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score,confusion_matrix,classification_report
+pipeline = Pipeline([
+    ('scaler', StandardScaler()),
+    ('model', LogisticRegression(max_iter=1000,class_weight='balanced'))
+])
+
 scaler = StandardScaler()
 x_train,x_test,y_train,y_test = train_test_split(x,y,test_size = 0.2,random_state = 42)
 
@@ -193,17 +200,17 @@ x_train[num_col] = scaler.fit_transform(x_train[num_col])
 x_test[num_col] = scaler.transform(x_test[num_col])
 
 
-model = LogisticRegression(max_iter = 1000, class_weight = 'balanced')
-model.fit(x_train,y_train)
 
-y_prob = model.predict_proba(x_test)[:,1]
+pipeline.fit(x_train,y_train)
+
+y_prob = pipeline.predict_proba(x_test)[:,1]
 y_pred = (y_prob > 0.45).astype(int)
 
 #prediction
-y_pred = model.predict(x_test)
+y_pred = pipeline.predict(x_test)
 
 #evaluation
-print("Accuracy:", accuracy_score(y_test, y_pred))
+print("Logistic Accuracy:", accuracy_score(y_test, y_pred))
 print("\nConfusion Matrix:\n", confusion_matrix(y_test, y_pred))
 print("\nClassification Report:\n", classification_report(y_test, y_pred))
 
@@ -240,16 +247,6 @@ sns.boxplot(x='status', y='certifications_count', data=dataa)
 plt.title("Certifications vs Job Acceptance")
 plt.show()
 
-#Acceptance Rate by Company Tier
-sns.countplot(x='company_tier', hue='status', data=data)
-plt.title("Company Tier vs Job Acceptance")
-plt.show()
-
-#Experience vs Placement Success
-sns.boxplot(x='status', y='years_of_experience', data=dataa)
-plt.title("Experience vs Job Acceptance")
-plt.show()
-
 #Interview Score vs Placement Probability
 sns.boxplot(x='status', y='avg_score', data=dataa)
 plt.title("Interview Score vs Job Acceptance")
@@ -259,3 +256,10 @@ plt.show()
 sns.scatterplot(x='aptitude_score', y='technical_score', hue='status', data=dataa)
 plt.title("Aptitude vs Technical Score")
 plt.show()
+
+#save model
+model_col = x.columns
+joblib.dump(num_col,'num_columns.pkl')
+joblib.dump(scaler,'scaler.pkl')
+joblib.dump(pipeline,'model.pkl')
+joblib.dump(x_train.columns, 'columns.pkl')
