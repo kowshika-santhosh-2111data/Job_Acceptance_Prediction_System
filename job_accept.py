@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import warnings
 warnings.filterwarnings("ignore")
-data = pd.read_csv(r"C:\Users\Kowsh\OneDrive\Desktop\vscode_project\Job_acceptance\HR_Job_Placement_Dataset.csv")
+data = pd.read_csv("HR_Job_Placement_Dataset.csv")
 data.head()
 data.columns
 data.shape
@@ -127,7 +127,7 @@ for col in outlier_cols:
 print('Final_Missing_Values:\n',data.isnull().sum())
 print('\n Final_shape:',data.shape)
 clean_data = data.to_csv('job_acceptance_clean_Data.csv',index = False)
-dataa = pd.read_csv(r"C:\Users\Kowsh\OneDrive\Desktop\vscode_project\Job_acceptance\job_acceptance_clean_Data.csv")
+dataa = pd.read_csv("job_acceptance_clean_Data.csv")
 dataa.head()
 #Data visualization
 #Interview score vs job acceptance
