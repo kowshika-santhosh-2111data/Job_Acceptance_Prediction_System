@@ -12,7 +12,7 @@ st.title("Job Acceptance Dashboard")
 
 @st.cache_data
 def load_data():
-    df = pd.read_csv(r"C:\Users\Kowsh\OneDrive\Desktop\vscode_project\Job_acceptance\job_acceptance_clean_Data.csv")
+    df = pd.read_csv("job_acceptance_clean_Data.csv")
     return df
 df = load_data()
 
