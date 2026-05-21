@@ -56,7 +56,7 @@ st.write(f"{placement_rate:.2f}%")
 
 st.markdown("---")
 option = st.selectbox(
-    st.subheader('select a query to execute')
+    'select a query to execute',
     (
         'Job Acceptance Rate',
         'Average Interview Score by degree specialization',
