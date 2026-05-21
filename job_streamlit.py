@@ -141,11 +141,6 @@ company = st.selectbox('company_tier',['tier 1','tier 2','tier 3'])
 
 # Create empty dataframe with ALL 41 columns
 input_df = pd.DataFrame(0,index= [0],columns=columns)
-
-
-input_df[num_cols] = scaler.transform(input_df[num_cols])
-
-
 # Fill only known values
 input_df.loc[0, 'age_years'] = age
 input_df.loc[0, 'years_of_experience'] = experience
@@ -169,11 +164,13 @@ col3= f"company_tier_{company}"
 if col3 in input_df.columns:
     input_df.loc[0,col3] = 1
 
+input_df[num_cols] = scaler.transform(input_df[num_cols])
 
 # Fill remaining columns with 0
 input_df = input_df.fillna(0)
 
 #num_cols = ['age_years','years_of_experience','technical_score','aptitude_score','communication_score']
+
 prediction = model.predict(input_df)
 
 
