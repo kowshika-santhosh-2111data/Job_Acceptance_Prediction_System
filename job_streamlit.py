@@ -141,6 +141,11 @@ company = st.selectbox('company_tier',['tier 1','tier 2','tier 3'])
 
 # Create empty dataframe with ALL 41 columns
 input_df = pd.DataFrame(0,index= [0],columns=columns)
+
+
+input_df[num_cols] = scaler.transform(input_df[num_cols])
+
+
 # Fill only known values
 input_df.loc[0, 'age_years'] = age
 input_df.loc[0, 'years_of_experience'] = experience
@@ -148,7 +153,7 @@ input_df.loc[0, 'technical_score'] = technical
 input_df.loc[0, 'aptitude_score'] = aptitude
 input_df.loc[0, 'communication_score'] = communication
 input_df.loc[0,'certifications_count'] = certifications_count
-input_df.loc[0,'expected_ctc_lpa'] = expected_ctc
+input_df.loc[0,'expected_ctc_lpa'] = float(expected_ctc)
 input_df.loc[0,'employment_gap_months'] = gap
 
 
@@ -164,13 +169,11 @@ col3= f"company_tier_{company}"
 if col3 in input_df.columns:
     input_df.loc[0,col3] = 1
 
-input_df[num_cols] = scaler.transform(input_df[num_cols])
 
 # Fill remaining columns with 0
 input_df = input_df.fillna(0)
 
 #num_cols = ['age_years','years_of_experience','technical_score','aptitude_score','communication_score']
-
 prediction = model.predict(input_df)
 
 
@@ -183,6 +186,6 @@ if st.button('Predict'):
 
 
         if prob > 0.5:
-            st.success('candidate will  placed')       
+            st.success('candidate will be  placed')       
         else:
-            st.error('candidate will not placed')
+            st.error('candidate will not  be placed')
