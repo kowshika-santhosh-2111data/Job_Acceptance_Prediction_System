@@ -66,51 +66,66 @@ option = st.selectbox(
 
     )
 )
+
 #job acceptance rate
 if option == 'Job Acceptance Rate':
     st.subheader("Job Acceptance Rate")
     if st.button("Run Query",key = "job acceptance rate"):
-        job_acceptance_rate = df.groupby('job_role_match')['status'].apply(lambda x: (x == 'placed').mean() * 100).reset_index(name='Acceptance_Rate').sort_values(by='Acceptance_Rate', ascending=False)
+        job_acceptance_rate = (
+            df.groupby('job_role_match')['status']
+            .apply(lambda x: (x == 'placed').mean() * 100)
+            .reset_index(name='Acceptance_Rate')
+            .sort_values(by='Acceptance_Rate', ascending=False))
         st.dataframe(job_acceptance_rate)
 
 #average interview score
 if option == 'Average Interview Score by degree specialization':
     st.subheader("Average Interview Score by degree specialization")
     if st.button("Run Query",key = "average interview score"):
-        average_interview_score= df.groupby('degree_specialization')[[
+        average_interview_score=(
+             df.groupby('degree_specialization')[[
             'technical_score',
             'aptitude_score',
             'communication_score'
-        ]].mean().reset_index()
+        ]].mean()
+        .reset_index())
         st.dataframe(average_interview_score)
 
 #average skills match percentage
-if option == 'Average skills match percentage by segree specalization':
+if option == 'Average Skills Match Percentage by Degree Specialization':
     st.subheader("Average skills match percentage by degree specialization")
-    if st.button("Run Query", key = "average skills match percentage"):
-        average_skills_match_percentage = df.groupby('degree_Specailzation')
-        ['skills_match_percentage'].mean().reset_index(name='Average_skills_match_percentage').sort_values(
-            by='Average_skills_match_percent',ascending = False)
-
+    if st.button("Run Query", key="average skills match percentage"):
+        average_skills_match_percentage = (
+            df.groupby('degree_specialization')['skills_match_percentage']
+            .mean()
+            .reset_index(name='Average_Skills_Match_Percentage')
+            .sort_values(
+                by='Average_Skills_Match_Percentage',
+                ascending=False))
         st.dataframe(average_skills_match_percentage)
 
 #offer dropout rate
 if option == "Offer Dropout Rate by degree specialization":
     st.subheader("Offer Dropout Rate by degree specialization")
     if st.button("Run Query", key = "offer dropout rate"):
-        offer_dropout_rate = df.groupby('degree_specialization')['status'].apply(
-            lambda x: (x == 'not placed').mean() * 100
-    ).reset_index(name='Offer_Dropout_Rate').sort_values(by='Offer_Dropout_Rate', ascending=False)
+        offer_dropout_rate = (
+            df.groupby('degree_specialization')['status']
+            .apply(lambda x: (x == 'not placed')
+            .mean() * 100)
+            .reset_index(name='Offer_Dropout_Rate')
+    .sort_values(by='Offer_Dropout_Rate', ascending=False))
         st.dataframe(offer_dropout_rate)
 
 #high risk candidates percentage
 if option == "High risk candidates percentage":
     st.subheader("High risk candidates percentage")
     if st.button("Run Query", key = "High risk candidates percentage"):
-        high_risk_candidates_percentage = df.groupby('degree_specialization').apply(
-                lambda x: (x[x['years_of_experience'] < 2]
-               ['status'] == 'not placed').mean() * 100
-).reset_index(name='High_Risk_Candidates_Percentage')
+        high_risk_candidates_percentage = (
+            df.groupby('degree_specialization')
+            .apply(
+                lambda x: (x[x['years_of_experience'] < 2]['status'] == 'not placed')
+            .mean() * 100)
+            .reset_index(name='High_Risk_Candidates_Percentage'))
         st.dataframe(high_risk_candidates_percentage)
 
 st.markdown("---")
