@@ -66,7 +66,6 @@ option = st.selectbox(
 
     )
 )
-
 #job acceptance rate
 if option == 'Job Acceptance Rate':
     st.subheader("Job Acceptance Rate")
