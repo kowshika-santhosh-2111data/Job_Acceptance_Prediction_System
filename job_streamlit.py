@@ -60,7 +60,7 @@ option = st.selectbox(
     (
         'Job Acceptance Rate',
         'Average Interview Score by degree specialization',
-        'Average Skills Match Percentage by degree specialization',
+        'Average Skills Match Percentage by Degree Specialization',
         'Offer Dropout Rate by degree specialization',
         'High risk candidates percentage',
 
